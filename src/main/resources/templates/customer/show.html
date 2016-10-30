@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Spring Core Online Tutorial - List Products</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+
+    <link href="http://cdn.jsdelivr.net/webjars/bootstrap/3.3.4/css/bootstrap.min.css"
+          th:href="@{/webjars/bootstrap/3.3.5/css/bootstrap.min.css}"
+          rel="stylesheet" media="screen"/>
+
+    <script src="http://cdn.jsdelivr.net/webjars/jquery/2.1.4/jquery.min.js"
+            th:href="@{/webjars/jquery/2.1.4/jquery.min.js}"></script>
+
+    <link href="../static.css/css/spring-core.css"
+          th:href="@{css/spring-core.css}" rel="stylesheet" media="screen"/>
+</head>
+<body>
+<div class="container">
+    <div class="row">
+        <div class="col-sm6">
+            <h2>Show Customer</h2>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-sm-8">
+            <form class="form-horizontal">
+                <div class="form-group">
+                    <label class="col-sm-2 control-label">Customer Id:</label>
+
+                    <div class="col-sm-10">
+                        <p class="form-control-static" th:text="${customer.id}">Customer Id</p>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="col-sm-2 control-label">First Name:</label>
+
+                    <div class="col-sm-10">
+                        <p class="form-control-static" th:text="${customer.firstName}">First Name</p>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="col-sm-2 control-label">Last Name:</label>
+
+                    <div class="col-sm-10">
+                        <p class="form-control-static" th:text="${customer.lastName}">Last Name</p>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="col-sm-2 control-label">Email:</label>
+
+                    <div class="col-sm-10">
+                        <p class="form-control-static" th:text="${customer.email}">Email</p>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="col-sm-2 control-label">Phone Number:</label>
+
+                    <div class="col-sm-10">
+                        <p class="form-control-static" th:text="${customer.phoneNumber}">Email</p>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="col-sm-2 control-label">Address line one:</label>
+
+                    <div class="col-sm-10">
+                        <p class="form-control-static" th:text="${customer.address1}">Address line one</p>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="col-sm-2 control-label">Address line two:</label>
+
+                    <div class="col-sm-10">
+                        <p class="form-control-static" th:text="${customer.address2}">Address line two</p>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="col-sm-2 control-label">City:</label>
+
+                    <div class="col-sm-10">
+                        <p class="form-control-static" th:text="${customer.city}">City</p>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="col-sm-2 control-label">State:</label>
+
+                    <div class="col-sm-10">
+                        <p class="form-control-static" th:text="${customer.state}">State</p>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="col-sm-2 control-label">ZIP Code:</label>
+
+                    <div class="col-sm-10">
+                        <p class="form-control-static" th:text="${customer.zipCode}">ZIP Code</p>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+</body>
+</html>
