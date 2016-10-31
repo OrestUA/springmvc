@@ -46,7 +46,7 @@ public class ProductController {
     @RequestMapping(method = RequestMethod.POST)
     public String saveOrUpdate(Product product){
         Product savedProduct = productService.saveOrUpdate(product);
-        return "redirect:product/show/" + savedProduct.getId();
+        return "redirect:/product/show/" + savedProduct.getId();
     }
 
     @RequestMapping("/delete/{id}")
