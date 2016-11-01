@@ -38,11 +38,6 @@ public class ProductControllerTest {
 
     private MockMvc mockMvc;
 
-<<<<<<< HEAD
-    private IndexController indexController;
-
-=======
->>>>>>> 090e6c1184bfcd587db96ec3a93c40a478f07ef8
     @Before
     public void setup() {
         initMocks(this);
