@@ -1,7 +1,9 @@
 package guru.springframework.bootstrap;
 
+import guru.springframework.domain.Customer;
 import guru.springframework.domain.Product;
 import guru.springframework.services.ProductService;
+import guru.springframework.services.customer.CustomerService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationListener;
 import org.springframework.context.event.ContextRefreshedEvent;
@@ -18,10 +20,54 @@ public class SpringJPABootstrap implements ApplicationListener<ContextRefreshedE
     @Autowired
     private ProductService productService;
 
+    @Autowired
+    private CustomerService customerService;
+
 
     @Override
     public void onApplicationEvent(ContextRefreshedEvent contextRefreshedEvent) {
         loadProducts();
+        loadCustomers();
+    }
+
+    public void loadCustomers() {
+        Customer customer1 = new Customer();
+        customer1.setFirstName("Jon");
+        customer1.setLastName("Milko");
+        customer1.setEmail("user1@test.com");
+        customer1.setPhoneNumber("555-75-75");
+        customer1.setAddress1("California, Str, USA");
+        customer1.setAddress2("Washington, Str, USA");
+        customer1.setCity("Los Angeles");
+        customer1.setState("California");
+        customer1.setZipCode("00001");
+        customerService.saveOrUpdate(customer1);
+
+        Customer customer2 = new Customer();
+        customer2.setFirstName("Mike");
+        customer2.setLastName("Portnoy");
+        customer2.setEmail("user2@test.com");
+        customer2.setPhoneNumber("555-723-753");
+        customer2.setAddress1("San Francisco, Str, USA");
+        customer2.setAddress2("Chicago, Str, USA");
+        customer2.setCity("San Francisco");
+        customer2.setState("California");
+        customer2.setZipCode("00001");
+        customerService.saveOrUpdate(customer2);
+
+        Customer customer3 = new Customer();
+        customer3.setId(3);
+        customer3.setFirstName("Iren");
+        customer3.setLastName("Dido");
+        customer3.setEmail("user3@test.com");
+        customer3.setPhoneNumber("555-23-53");
+        customer3.setAddress1("New York, Str, USA");
+        customer3.setAddress2("New Jersey, Str, USA");
+        customer3.setCity("New Jersey");
+        customer3.setState("New York");
+        customer3.setZipCode("21000");
+        customerService.saveOrUpdate(customer3);
+
     }
 
     public void loadProducts(){
