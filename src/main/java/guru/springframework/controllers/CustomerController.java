@@ -1,8 +1,7 @@
 package guru.springframework.controllers;
 
 import guru.springframework.domain.Customer;
-import guru.springframework.domain.Product;
-import guru.springframework.services.customer.CustomerService;
+import guru.springframework.services.CustomerService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;

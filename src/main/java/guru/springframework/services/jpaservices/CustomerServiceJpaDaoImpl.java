@@ -1,6 +1,10 @@
-package guru.springframework.services.customer;
+package guru.springframework.services.jpaservices;
 
 import guru.springframework.domain.Customer;
+import guru.springframework.domain.User;
+import guru.springframework.services.CustomerService;
+import guru.springframework.services.security.EncryptionService;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Profile;
 import org.springframework.stereotype.Service;
 
@@ -14,14 +18,10 @@ import java.util.List;
  */
 @Service
 @Profile("jpadao")
-public class CustomerServiceJpaDaoImpl implements CustomerService {
+public class CustomerServiceJpaDaoImpl extends AbstractJpaDaoService implements CustomerService {
 
-    private EntityManagerFactory emf;
-
-    @PersistenceUnit
-    public void setEmf(EntityManagerFactory emf) {
-        this.emf = emf;
-    }
+    @Autowired
+    private EncryptionService encryptionService;
 
     @Override
     public List<Customer> listAll() {
@@ -41,6 +41,10 @@ public class CustomerServiceJpaDaoImpl implements CustomerService {
     public Customer saveOrUpdate(Customer domainObject) {
         EntityManager em = emf.createEntityManager();
 
+        if(domainObject.getUser() !=null && domainObject.getUser().getPassword()!=null){
+            domainObject.getUser().setEncryptedPassword(
+                    encryptionService.encryptString(domainObject.getUser().getPassword()));
+        }
         em.getTransaction().begin();
         Customer savedCustomer = em.merge(domainObject);//creates new if not exists or updates existing one Customer
         em.getTransaction().commit();

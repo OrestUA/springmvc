@@ -1,7 +1,7 @@
 package guru.springframework.controllers;
 
 import guru.springframework.domain.Customer;
-import guru.springframework.services.customer.CustomerService;
+import guru.springframework.services.CustomerService;
 import org.junit.Before;
 import org.junit.Test;
 import org.mockito.ArgumentCaptor;

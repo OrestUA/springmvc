@@ -25,6 +25,17 @@ public class Customer implements DomainObject {
     private String state;
     private String zipCode;
 
+    @OneToOne(cascade = CascadeType.ALL)
+    private User user;
+
+    public User getUser() {
+        return user;
+    }
+
+    public void setUser(User user) {
+        this.user = user;
+    }
+
     public Integer getId() {
         return id;
     }

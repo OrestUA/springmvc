@@ -1,4 +1,4 @@
-package guru.springframework.services.customer;
+package guru.springframework.services;
 
 import guru.springframework.domain.Customer;
 import guru.springframework.domain.Product;

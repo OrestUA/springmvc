@@ -1,7 +1,7 @@
 package guru.springframework.services;
 
 import guru.springframework.domain.Customer;
-import guru.springframework.services.customer.CustomerService;
+import guru.springframework.domain.User;
 import org.junit.BeforeClass;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -10,7 +10,6 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.junit4.SpringRunner;
 
-import java.math.BigDecimal;
 import java.util.List;
 
 import static org.hamcrest.Matchers.is;
@@ -59,12 +58,24 @@ public class CustomerServiceJpaDaoImplTest {
     }
 
     @Test
+    public void testSaveWithUser() throws Exception {
+        Customer customer = new Customer();
+        User user = new User();
+        user.setUsername("myUsrname");
+        user.setPassword("myPassword");
+        customer.setUser(user);
+
+        Customer savedCustomer = customerService.saveOrUpdate(customer);
+        assertNotNull(savedCustomer);
+    }
+
+    @Test
     public void testListMethod() throws Exception {
-        List<Customer> Customers = (List<Customer>) customerService.listAll();
+        List<Customer> customers = (List<Customer>) customerService.listAll();
 
-        assertEquals(3, Customers.size());
+        assertEquals(3, customers.size());
 
-        Customer actualCustomer = Customers.get(0);
+        Customer actualCustomer = customers.get(0);
 
         assertEquals(expectedCustomer1.getId(), actualCustomer.getId());
         assertCustomer(expectedCustomer1,actualCustomer);

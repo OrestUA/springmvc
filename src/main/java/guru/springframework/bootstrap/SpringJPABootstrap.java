@@ -3,7 +3,7 @@ package guru.springframework.bootstrap;
 import guru.springframework.domain.Customer;
 import guru.springframework.domain.Product;
 import guru.springframework.services.ProductService;
-import guru.springframework.services.customer.CustomerService;
+import guru.springframework.services.CustomerService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationListener;
 import org.springframework.context.event.ContextRefreshedEvent;
