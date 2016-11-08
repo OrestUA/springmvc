@@ -2,6 +2,8 @@ package guru.springframework.domain;
 
 import javax.persistence.*;
 
+import static javax.persistence.CascadeType.*;
+
 /**
  * Created by Fudjitsu on 30.10.16.
  */
@@ -19,13 +21,14 @@ public class Customer implements DomainObject {
     private String lastName;
     private String email;
     private String phoneNumber;
-    private String address1;
-    private String address2;
-    private String city;
-    private String state;
-    private String zipCode;
 
-    @OneToOne
+    @Embedded
+    private Address billingAddress;
+
+    @Embedded
+    private Address shippingAddress;
+
+    @OneToOne(cascade = {PERSIST, MERGE, REMOVE, REFRESH, DETACH})
     private User user;
 
     public User getUser() {
@@ -84,43 +87,19 @@ public class Customer implements DomainObject {
         this.phoneNumber = phoneNumber;
     }
 
-    public String getAddress1() {
-        return address1;
+    public Address getBillingAddress() {
+        return billingAddress;
     }
 
-    public void setAddress1(String address1) {
-        this.address1 = address1;
+    public void setBillingAddress(Address billingAddress) {
+        this.billingAddress = billingAddress;
     }
 
-    public String getAddress2() {
-        return address2;
+    public Address getShippingAddress() {
+        return shippingAddress;
     }
 
-    public void setAddress2(String address2) {
-        this.address2 = address2;
-    }
-
-    public String getCity() {
-        return city;
-    }
-
-    public void setCity(String city) {
-        this.city = city;
-    }
-
-    public String getState() {
-        return state;
-    }
-
-    public void setState(String state) {
-        this.state = state;
-    }
-
-    public String getZipCode() {
-        return zipCode;
-    }
-
-    public void setZipCode(String zipCode) {
-        this.zipCode = zipCode;
+    public void setShippingAddress(Address shippingAddress) {
+        this.shippingAddress = shippingAddress;
     }
 }

@@ -1,5 +1,6 @@
 package guru.springframework.services;
 
+import guru.springframework.domain.Address;
 import guru.springframework.domain.Customer;
 import guru.springframework.domain.User;
 import org.junit.BeforeClass;
@@ -49,11 +50,12 @@ public class CustomerServiceJpaDaoImplTest {
         customer.setLastName(lastName);
         customer.setEmail(email);
         customer.setPhoneNumber(phoneNumber);
-        customer.setAddress1(address1);
-        customer.setAddress2(address2);
-        customer.setCity(city);
-        customer.setState(state);
-        customer.setZipCode(zip);
+        customer.setBillingAddress(new Address());
+        customer.getBillingAddress().setAddress_line1(address1);
+        customer.getBillingAddress().setAddress_line2(address2);
+        customer.getBillingAddress().setCity(city);
+        customer.getBillingAddress().setState(state);
+        customer.getBillingAddress().setZipCode(zip);
         return customer;
     }
 
@@ -61,12 +63,15 @@ public class CustomerServiceJpaDaoImplTest {
     public void testSaveWithUser() throws Exception {
         Customer customer = new Customer();
         User user = new User();
-        user.setUsername("myUsrname");
+        user.setUsername("myUsername");
         user.setPassword("myPassword");
         customer.setUser(user);
 
         Customer savedCustomer = customerService.saveOrUpdate(customer);
         assertNotNull(savedCustomer);
+        customerService.delete(savedCustomer.getId());
+        assertNull(customerService.getById(savedCustomer.getId()));
+
     }
 
     @Test
@@ -127,11 +132,12 @@ public class CustomerServiceJpaDaoImplTest {
         expectedCustomer.setLastName("Newman1");
         expectedCustomer.setEmail("new1@test.com");
         expectedCustomer.setPhoneNumber("`55-55-55");
-        expectedCustomer.setAddress1("Down1, Str, USA");
-        expectedCustomer.setAddress2("Long1, Str, USA");
-        expectedCustomer.setCity("New York1");
-        expectedCustomer.setState("New York1");
-        expectedCustomer.setZipCode("21001");
+        expectedCustomer.setBillingAddress(new Address());
+        expectedCustomer.getBillingAddress().setAddress_line1("Down1, Str, USA");
+        expectedCustomer.getBillingAddress().setAddress_line2("Long1, Str, USA");
+        expectedCustomer.getBillingAddress().setCity("New York1");
+        expectedCustomer.getBillingAddress().setState("New York1");
+        expectedCustomer.getBillingAddress().setZipCode("21001");
 
         Integer versionBefore = expectedCustomer.getVersion();
 
@@ -147,10 +153,10 @@ public class CustomerServiceJpaDaoImplTest {
         assertEquals(expected.getLastName(), actual.getLastName());
         assertEquals(expected.getEmail(), actual.getEmail());
         assertEquals(expected.getPhoneNumber(), actual.getPhoneNumber());
-        assertEquals(expected.getAddress1(), actual.getAddress1());
-        assertEquals(expected.getAddress2(), actual.getAddress2());
-        assertEquals(expected.getCity(), actual.getCity());
-        assertEquals(expected.getState(), actual.getState());
-        assertEquals(expected.getZipCode(), actual.getZipCode());
+        assertEquals(expected.getBillingAddress().getAddress_line1(), actual.getBillingAddress().getAddress_line1());
+        assertEquals(expected.getBillingAddress().getAddress_line2(), actual.getBillingAddress().getAddress_line2());
+        assertEquals(expected.getBillingAddress().getCity(), actual.getBillingAddress().getCity());
+        assertEquals(expected.getBillingAddress().getState(), actual.getBillingAddress().getState());
+        assertEquals(expected.getBillingAddress().getZipCode(), actual.getBillingAddress().getZipCode());
     }
 }

@@ -22,6 +22,8 @@ public class CartDetail implements  DomainObject {
     @OneToOne
     private Product product;
 
+    private Integer quantity;
+
     @Override
     public Integer getId() {
         return id;
@@ -54,6 +56,14 @@ public class CartDetail implements  DomainObject {
 
     public void setProduct(Product product) {
         this.product = product;
+    }
+
+    public Integer getQuantity() {
+        return quantity;
+    }
+
+    public void setQuantity(Integer quantity) {
+        this.quantity = quantity;
     }
 
 }

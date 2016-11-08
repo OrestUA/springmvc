@@ -25,11 +25,11 @@
                 <th>Last Name</th>
                 <th>Email</th>
                 <th>Phone Number</th>
-                <th>Address 1</th>
-                <th>Address 2</th>
-                <th>City</th>
-                <th>State</th>
-                <th>ZIP Code</th>
+                <th>Shipping Address 1</th>
+                <th>Shipping Address 2</th>
+                <th>Shipping City</th>
+                <th>Shipping State</th>
+                <th>Shipping ZIP Code</th>
                 <th>View</th>
                 <th>Edit</th>
                 <th>Delete</th>
@@ -40,11 +40,11 @@
                 <td th:text="${user.lastName}"></td>
                 <td th:text="${user.email}"></td>
                 <td th:text="${user.phoneNumber}"></td>
-                <td th:text="${user.address1}"></td>
-                <td th:text="${user.address2}"></td>
-                <td th:text="${user.city}"></td>
-                <td th:text="${user.state}"></td>
-                <td th:text="${user.zipCode}"></td>
+                <td th:text="${user.shippingAddress.address_line1}"></td>
+                <td th:text="${user.shippingAddress.address_line2}"></td>
+                <td th:text="${user.shippingAddress.city}"></td>
+                <td th:text="${user.shippingAddress.state}"></td>
+                <td th:text="${user.shippingAddress.zipCode}"></td>
                 <td><a th:href="${'/customer/show/' + user.id}">View</a></td>
                 <td><a th:href="${'/customer/edit/' + user.id}">Edit</a></td>
                 <td><a th:href="${'/customer/delete/' + user.id}">Delete</a></td>

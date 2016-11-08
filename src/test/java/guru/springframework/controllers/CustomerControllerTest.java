@@ -1,5 +1,6 @@
 package guru.springframework.controllers;
 
+import guru.springframework.domain.Address;
 import guru.springframework.domain.Customer;
 import guru.springframework.services.CustomerService;
 import org.junit.Before;
@@ -9,6 +10,7 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.springframework.test.web.servlet.MockMvc;
+import org.springframework.test.web.servlet.result.ModelResultMatchers;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 
 import java.util.ArrayList;
@@ -20,6 +22,7 @@ import static org.mockito.Mockito.*;
 import static org.mockito.MockitoAnnotations.initMocks;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
+import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
 /**
@@ -113,11 +116,12 @@ public class CustomerControllerTest {
         returnCustomer.setLastName(lastName);
         returnCustomer.setEmail(email);
         returnCustomer.setPhoneNumber(phoneNumber);
-        returnCustomer.setZipCode(zipCode);
-        returnCustomer.setAddress1(address1);
-        returnCustomer.setAddress2(address2);
-        returnCustomer.setState(state);
-        returnCustomer.setCity(city);
+        returnCustomer.setBillingAddress(new Address());
+        returnCustomer.getBillingAddress().setZipCode(zipCode);
+        returnCustomer.getBillingAddress().setAddress_line1(address1);
+        returnCustomer.getBillingAddress().setAddress_line2(address2);
+        returnCustomer.getBillingAddress().setState(state);
+        returnCustomer.getBillingAddress().setCity(city);
 
         when(customerService.saveOrUpdate(Mockito.any(Customer.class))).thenReturn(returnCustomer);
 
@@ -127,11 +131,11 @@ public class CustomerControllerTest {
                 .param("lastName", lastName)
                 .param("email", email)
                 .param("phoneNumber", phoneNumber)
-                .param("zipCode", zipCode)
-                .param("address1", address1)
-                .param("address2", address2)
-                .param("state", state)
-                .param("city", city))
+                .param("billingAddress.zipCode", zipCode)
+                .param("billingAddress.address_line1", address1)
+                .param("billingAddress.address_line2", address2)
+                .param("billingAddress.state", state)
+                .param("billingAddress.city", city))
 
                 .andExpect(status().is3xxRedirection())
                 .andExpect(view().name("redirect:/customer/show/1"))
@@ -141,12 +145,13 @@ public class CustomerControllerTest {
                 .andExpect(model().attribute("customer", hasProperty("lastName", is(lastName))))
                 .andExpect(model().attribute("customer", hasProperty("email", is(email))))
                 .andExpect(model().attribute("customer", hasProperty("phoneNumber", is(phoneNumber))))
-                .andExpect(model().attribute("customer", hasProperty("zipCode", is(zipCode))))
-                .andExpect(model().attribute("customer", hasProperty("address1", is(address1))))
-                .andExpect(model().attribute("customer", hasProperty("address2", is(address2))))
-                .andExpect(model().attribute("customer", hasProperty("state", is(state))))
-                .andExpect(model().attribute("customer", hasProperty("city", is(city))));
+                .andExpect(model().attribute("customer", hasProperty("billingAddress",hasProperty("zipCode", is(zipCode)))))
+                .andExpect(model().attribute("customer", hasProperty("billingAddress", hasProperty("address_line1", is(address1)))))
+                .andExpect(model().attribute("customer", hasProperty("billingAddress", hasProperty("address_line2", is(address2)))))
+                .andExpect(model().attribute("customer", hasProperty("billingAddress", hasProperty("state", is(state)))))
+                .andExpect(model().attribute("customer", hasProperty("billingAddress", hasProperty("city", is(city)))));
 
+        ModelResultMatchers m = model();
         //verify properties of bound object
         ArgumentCaptor<Customer> boundCustomer = ArgumentCaptor.forClass(Customer.class);
         verify(customerService).saveOrUpdate(boundCustomer.capture());
@@ -157,11 +162,11 @@ public class CustomerControllerTest {
         assertEquals(lastName, updateCustomer.getLastName());
         assertEquals(email, updateCustomer.getEmail());
         assertEquals(phoneNumber, updateCustomer.getPhoneNumber());
-        assertEquals(zipCode, updateCustomer.getZipCode());
-        assertEquals(address1, updateCustomer.getAddress1());
-        assertEquals(address2, updateCustomer.getAddress2());
-        assertEquals(state, updateCustomer.getState());
-        assertEquals(city, updateCustomer.getCity());
+        assertEquals(zipCode, updateCustomer.getBillingAddress().getZipCode());
+        assertEquals(address1, updateCustomer.getBillingAddress().getAddress_line1());
+        assertEquals(address2, updateCustomer.getBillingAddress().getAddress_line2());
+        assertEquals(state, updateCustomer.getBillingAddress().getState());
+        assertEquals(city, updateCustomer.getBillingAddress().getCity());
     }
 
     @Test
