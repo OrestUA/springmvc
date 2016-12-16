@@ -42,7 +42,7 @@ public class CustomerServiceJpaDaoImpl extends AbstractJpaDaoService implements 
         EntityManager em = emf.createEntityManager();
 
         em.getTransaction().begin();
-        if(domainObject.getUser() !=null && domainObject.getUser().getPassword()!=null){
+        if (domainObject.getUser() != null && domainObject.getUser().getPassword() != null) {
             domainObject.getUser().setEncryptedPassword(
                     encryptionService.encryptString(domainObject.getUser().getPassword()));
         }
@@ -57,7 +57,7 @@ public class CustomerServiceJpaDaoImpl extends AbstractJpaDaoService implements 
         EntityManager em = emf.createEntityManager();
 
         em.getTransaction().begin();
-        em.remove(em.find(Customer.class,id));
+        em.remove(em.find(Customer.class, id));
         em.getTransaction().commit();
     }
 }

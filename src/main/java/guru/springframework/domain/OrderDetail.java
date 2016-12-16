@@ -1,29 +1,20 @@
 package guru.springframework.domain;
 
 import javax.persistence.*;
-import java.util.ArrayList;
 
 /**
- * Created by YSkakun on 11/3/2016.
+ * Created by YSkakun on 11/10/2016.
  */
 @Entity
-public class CartDetail extends AbstractDomainClass {
+public class OrderDetail extends AbstractDomainClass{
 
     @ManyToOne
-    private Cart cart;
+    private Order order;
 
     @OneToOne
     private Product product;
 
     private Integer quantity;
-
-    public Cart getCart() {
-        return cart;
-    }
-
-    public void setCart(Cart cart) {
-        this.cart = cart;
-    }
 
     public Product getProduct() {
         return product;
@@ -41,4 +32,11 @@ public class CartDetail extends AbstractDomainClass {
         this.quantity = quantity;
     }
 
+    public Order getOrder() {
+        return order;
+    }
+
+    public void setOrder(Order order) {
+        this.order = order;
+    }
 }

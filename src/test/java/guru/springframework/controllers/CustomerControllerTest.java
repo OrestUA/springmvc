@@ -118,8 +118,8 @@ public class CustomerControllerTest {
         returnCustomer.setPhoneNumber(phoneNumber);
         returnCustomer.setBillingAddress(new Address());
         returnCustomer.getBillingAddress().setZipCode(zipCode);
-        returnCustomer.getBillingAddress().setAddress_line1(address1);
-        returnCustomer.getBillingAddress().setAddress_line2(address2);
+        returnCustomer.getBillingAddress().setAddressLine1(address1);
+        returnCustomer.getBillingAddress().setAddressLine2(address2);
         returnCustomer.getBillingAddress().setState(state);
         returnCustomer.getBillingAddress().setCity(city);
 
@@ -132,8 +132,8 @@ public class CustomerControllerTest {
                 .param("email", email)
                 .param("phoneNumber", phoneNumber)
                 .param("billingAddress.zipCode", zipCode)
-                .param("billingAddress.address_line1", address1)
-                .param("billingAddress.address_line2", address2)
+                .param("billingAddress.addressLine1", address1)
+                .param("billingAddress.addressLine2", address2)
                 .param("billingAddress.state", state)
                 .param("billingAddress.city", city))
 
@@ -145,9 +145,9 @@ public class CustomerControllerTest {
                 .andExpect(model().attribute("customer", hasProperty("lastName", is(lastName))))
                 .andExpect(model().attribute("customer", hasProperty("email", is(email))))
                 .andExpect(model().attribute("customer", hasProperty("phoneNumber", is(phoneNumber))))
-                .andExpect(model().attribute("customer", hasProperty("billingAddress",hasProperty("zipCode", is(zipCode)))))
-                .andExpect(model().attribute("customer", hasProperty("billingAddress", hasProperty("address_line1", is(address1)))))
-                .andExpect(model().attribute("customer", hasProperty("billingAddress", hasProperty("address_line2", is(address2)))))
+                .andExpect(model().attribute("customer", hasProperty("billingAddress", hasProperty("zipCode", is(zipCode)))))
+                .andExpect(model().attribute("customer", hasProperty("billingAddress", hasProperty("addressLine1", is(address1)))))
+                .andExpect(model().attribute("customer", hasProperty("billingAddress", hasProperty("addressLine2", is(address2)))))
                 .andExpect(model().attribute("customer", hasProperty("billingAddress", hasProperty("state", is(state)))))
                 .andExpect(model().attribute("customer", hasProperty("billingAddress", hasProperty("city", is(city)))));
 
@@ -163,8 +163,8 @@ public class CustomerControllerTest {
         assertEquals(email, updateCustomer.getEmail());
         assertEquals(phoneNumber, updateCustomer.getPhoneNumber());
         assertEquals(zipCode, updateCustomer.getBillingAddress().getZipCode());
-        assertEquals(address1, updateCustomer.getBillingAddress().getAddress_line1());
-        assertEquals(address2, updateCustomer.getBillingAddress().getAddress_line2());
+        assertEquals(address1, updateCustomer.getBillingAddress().getAddressLine1());
+        assertEquals(address2, updateCustomer.getBillingAddress().getAddressLine2());
         assertEquals(state, updateCustomer.getBillingAddress().getState());
         assertEquals(city, updateCustomer.getBillingAddress().getCity());
     }

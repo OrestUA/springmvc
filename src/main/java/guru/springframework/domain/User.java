@@ -1,19 +1,16 @@
 package guru.springframework.domain;
 
+import guru.springframework.config.LocalDateTimeAttributeConverter;
+
 import javax.persistence.*;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
 
 /**
  * Created by YSkakun on 11/3/2016.
  */
 @Entity
-public class User implements DomainObject {
-
-    @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
-    private Integer id;
-
-    @Version
-    private Integer version;
+public class User extends AbstractDomainClass{
 
     private String username;
 
@@ -27,25 +24,8 @@ public class User implements DomainObject {
     private Cart cart;
 
     private String encryptedPassword;
+
     private Boolean enabled = true;
-
-    @Override
-    public Integer getId() {
-        return id;
-    }
-
-    @Override
-    public void setId(Integer id) {
-        this.id = id;
-    }
-
-    public Integer getVersion() {
-        return version;
-    }
-
-    public void setVersion(Integer version) {
-        this.version = version;
-    }
 
     public String getUsername() {
         return username;

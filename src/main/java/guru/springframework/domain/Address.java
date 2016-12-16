@@ -8,26 +8,26 @@ import javax.persistence.Embeddable;
 @Embeddable
 public class Address {
 
-    private String address_line1;
-    private String address_line2;
+    private String addressLine1;
+    private String addressLine2;
     private String city;
     private String state;
     private String zipCode;
 
-    public String getAddress_line1() {
-        return address_line1;
+    public String getAddressLine1() {
+        return addressLine1;
     }
 
-    public void setAddress_line1(String address_line1) {
-        this.address_line1 = address_line1;
+    public void setAddressLine1(String addressLine1) {
+        this.addressLine1 = addressLine1;
     }
 
-    public String getAddress_line2() {
-        return address_line2;
+    public String getAddressLine2() {
+        return addressLine2;
     }
 
-    public void setAddress_line2(String address_line2) {
-        this.address_line2 = address_line2;
+    public void setAddressLine2(String addressLine2) {
+        this.addressLine2 = addressLine2;
     }
 
     public String getCity() {

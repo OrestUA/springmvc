@@ -46,8 +46,8 @@ public class CustomerServiceImpl extends AbstractMapService implements CustomerS
 //        customer1.setLastName("Milko");
 //        customer1.setEmail("user1@test.com");
 //        customer1.setPhoneNumber("555-75-75");
-//        customer1.setAddress_line1("California, Str, USA");
-//        customer1.setAddress_line2("Washington, Str, USA");
+//        customer1.setAddressLine1("California, Str, USA");
+//        customer1.setAddressLine2("Washington, Str, USA");
 //        customer1.setCity("Los Angeles");
 //        customer1.setState("California");
 //        customer1.setZipCode("00001");
@@ -60,8 +60,8 @@ public class CustomerServiceImpl extends AbstractMapService implements CustomerS
 //        customer2.setLastName("Portnoy");
 //        customer2.setEmail("user2@test.com");
 //        customer2.setPhoneNumber("555-723-753");
-//        customer2.setAddress_line1("San Francisco, Str, USA");
-//        customer2.setAddress_line2("Chicago, Str, USA");
+//        customer2.setAddressLine1("San Francisco, Str, USA");
+//        customer2.setAddressLine2("Chicago, Str, USA");
 //        customer2.setCity("San Francisco");
 //        customer2.setState("California");
 //        customer2.setZipCode("00001");
@@ -74,8 +74,8 @@ public class CustomerServiceImpl extends AbstractMapService implements CustomerS
 //        customer3.setLastName("Dido");
 //        customer3.setEmail("user3@test.com");
 //        customer3.setPhoneNumber("555-23-53");
-//        customer3.setAddress_line1("New York, Str, USA");
-//        customer3.setAddress_line2("New Jersey, Str, USA");
+//        customer3.setAddressLine1("New York, Str, USA");
+//        customer3.setAddressLine2("New Jersey, Str, USA");
 //        customer3.setCity("New Jersey");
 //        customer3.setState("New York");
 //        customer3.setZipCode("21000");
