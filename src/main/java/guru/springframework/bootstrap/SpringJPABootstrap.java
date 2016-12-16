@@ -1,11 +1,9 @@
 package guru.springframework.bootstrap;
 
 import guru.springframework.domain.*;
+import guru.springframework.domain.security.Role;
 import guru.springframework.enums.OrderStatus;
-import guru.springframework.services.OrderService;
-import guru.springframework.services.ProductService;
-import guru.springframework.services.CustomerService;
-import guru.springframework.services.UserService;
+import guru.springframework.services.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationListener;
 import org.springframework.context.event.ContextRefreshedEvent;
@@ -32,6 +30,9 @@ public class SpringJPABootstrap implements ApplicationListener<ContextRefreshedE
     @Autowired
     private OrderService orderService;
 
+    @Autowired
+    private RoleService roleService;
+
 
     @Override
     public void onApplicationEvent(ContextRefreshedEvent contextRefreshedEvent) {
@@ -45,6 +46,8 @@ public class SpringJPABootstrap implements ApplicationListener<ContextRefreshedE
         loadUsersAndCustomers();
         loadCarts();
         loadOrderHistory();
+        loadRoles();
+        assignUsersToDefaultRole();
     }
 
     private void loadOrders1() {
@@ -268,7 +271,7 @@ public class SpringJPABootstrap implements ApplicationListener<ContextRefreshedE
 
     }
 
-    public void loadProducts1(){
+    public void loadProducts1() {
         Product product1 = new Product();
         product1.setDescription("Product 1");
         product1.setPrice(new BigDecimal("12.99"));
@@ -302,11 +305,31 @@ public class SpringJPABootstrap implements ApplicationListener<ContextRefreshedE
     }
 
     ////////////////////////////
+    private void assignUsersToDefaultRole() {
+        List<Role> roles = (List<Role>) roleService.listAll();
+        List<User> users = (List<User>) userService.listAll();
+
+        roles.forEach(role -> {
+            if (role.getRole().equalsIgnoreCase("CUSTOMER")) {
+                users.forEach(user -> {
+                    user.addRole(role);
+                    userService.saveOrUpdate(user);
+                });
+            }
+        });
+    }
+
+    private void loadRoles(){
+        Role role = new Role();
+        role.setRole("CUSTOMER");
+        roleService.saveOrUpdate(role);
+    }
+
     private void loadOrderHistory() {
         List<User> users = (List<User>) userService.listAll();
         List<Product> products = (List<Product>) productService.listAll();
 
-        users.forEach(user ->{
+        users.forEach(user -> {
             Order order = new Order();
             order.setCustomer(user.getCustomer());
             order.setOrderStatus(OrderStatus.SHIPPED);
@@ -391,7 +414,7 @@ public class SpringJPABootstrap implements ApplicationListener<ContextRefreshedE
         userService.saveOrUpdate(user3);
     }
 
-    public void loadProducts(){
+    public void loadProducts() {
 
         Product product1 = new Product();
         product1.setDescription("Product 1");

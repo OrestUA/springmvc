@@ -1,10 +1,9 @@
 package guru.springframework.services.mapservices;
 
-import guru.springframework.domain.Customer;
-import guru.springframework.domain.User;
 import guru.springframework.domain.DomainObject;
 import guru.springframework.domain.User;
-import guru.springframework.services.UserService;
+import guru.springframework.domain.security.Role;
+import guru.springframework.services.RoleService;
 import org.springframework.context.annotation.Profile;
 import org.springframework.stereotype.Service;
 
@@ -15,7 +14,7 @@ import java.util.List;
  */
 @Service
 @Profile("map")
-public class UserServiceMapImpl extends AbstractMapService implements UserService {
+public class RoleServiceMapImpl extends AbstractMapService implements RoleService {
 
     @Override
     public List<DomainObject> listAll() {
@@ -23,13 +22,13 @@ public class UserServiceMapImpl extends AbstractMapService implements UserServic
     }
 
     @Override
-    public User getById(Integer id) {
-        return (User)super.getById(id);
+    public Role getById(Integer id) {
+        return (Role)super.getById(id);
     }
 
     @Override
-    public User saveOrUpdate(User user) {
-            return (User)super.saveOrUpdate(user);
+    public Role saveOrUpdate(Role role) {
+            return (Role)super.saveOrUpdate(role);
     }
 
     @Override
