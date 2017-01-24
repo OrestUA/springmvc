@@ -2,6 +2,7 @@ package guru.springframework.domain;
 
 import guru.springframework.config.LocalDateTimeAttributeConverter;
 import guru.springframework.domain.security.Role;
+import org.springframework.data.repository.cdi.Eager;
 
 import javax.persistence.*;
 import java.time.LocalDate;
@@ -30,7 +31,7 @@ public class User extends AbstractDomainClass {
 
     private Boolean enabled = true;
 
-    @ManyToMany
+    @ManyToMany(fetch = FetchType.EAGER)
     @JoinTable
     private List<Role> roles = new ArrayList<>();
 

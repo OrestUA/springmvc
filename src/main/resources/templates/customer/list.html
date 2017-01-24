@@ -40,11 +40,11 @@
                 <td th:text="${user.lastName}"></td>
                 <td th:text="${user.email}"></td>
                 <td th:text="${user.phoneNumber}"></td>
-                <td th:text="${user.shippingAddress.addressLine1}"></td>
-                <td th:text="${user.shippingAddress.addressLine2}"></td>
-                <td th:text="${user.shippingAddress.city}"></td>
-                <td th:text="${user.shippingAddress.state}"></td>
-                <td th:text="${user.shippingAddress.zipCode}"></td>
+                <td th:text="${user.shippingAddress?.addressLine1}"></td>
+                <td th:text="${user.shippingAddress?.addressLine2}"></td>
+                <td th:text="${user.shippingAddress?.city}"></td>
+                <td th:text="${user.shippingAddress?.state}"></td>
+                <td th:text="${user.shippingAddress?.zipCode}"></td>
                 <td><a th:href="${'/customer/show/' + user.id}">View</a></td>
                 <td><a th:href="${'/customer/edit/' + user.id}">Edit</a></td>
                 <td><a th:href="${'/customer/delete/' + user.id}">Delete</a></td>
