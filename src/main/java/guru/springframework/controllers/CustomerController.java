@@ -1,5 +1,6 @@
 package guru.springframework.controllers;
 
+import guru.springframework.commands.CustomerForm;
 import guru.springframework.domain.Customer;
 import guru.springframework.services.CustomerService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -39,13 +40,13 @@ public class CustomerController {
 
     @RequestMapping("/new")
     public String newCustomer(Model model){
-        model.addAttribute("customer", new Customer());
+        model.addAttribute("customer", new CustomerForm());
         return "customer/customerform";
     }
 
     @RequestMapping(method = RequestMethod.POST)
-    public String saveOrUpdate(Customer customer){
-        Customer savedCustomer = customerService.saveOrUpdate(customer);
+    public String saveOrUpdate(CustomerForm customerForm){
+        Customer savedCustomer = customerService.saveOrUpdateCustomerForm(customerForm);
         return "redirect:/customer/show/" + savedCustomer.getId();
     }
 

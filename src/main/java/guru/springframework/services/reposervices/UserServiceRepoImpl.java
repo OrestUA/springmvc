@@ -1,4 +1,4 @@
-package guru.springframework.reposervices;
+package guru.springframework.services.reposervices;
 
 import guru.springframework.domain.User;
 import guru.springframework.repositories.UserRepository;
@@ -9,8 +9,6 @@ import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.stream.Collectors;
-import java.util.stream.Stream;
 
 /**
  * Created by YSkakun on 1/24/2017.

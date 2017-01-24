@@ -1,5 +1,7 @@
-package guru.springframework.reposervices;
+package guru.springframework.services.reposervices;
 
+import guru.springframework.commands.CustomerForm;
+import guru.springframework.converters.CustomerFormToCustomer;
 import guru.springframework.domain.Customer;
 import guru.springframework.repositories.CustomerRepository;
 import guru.springframework.services.CustomerService;
@@ -9,8 +11,6 @@ import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.stream.Collectors;
-import java.util.stream.Stream;
 
 /**
  * Created by YSkakun on 1/24/2017.
@@ -18,6 +18,9 @@ import java.util.stream.Stream;
 @Service
 @Profile("springdatajpa")
 public class CustomerServiceRepoImpl implements CustomerService {
+
+    @Autowired
+    private CustomerFormToCustomer customerFormToCustomer;
 
     private CustomerRepository customerRepository;
 
@@ -46,5 +49,16 @@ public class CustomerServiceRepoImpl implements CustomerService {
     @Override
     public void delete(Integer id) {
         customerRepository.delete(id);
+    }
+
+    @Override
+    public Customer saveOrUpdateCustomerForm(CustomerForm customerForm) {
+        Customer newCustomer = customerFormToCustomer.convert(customerForm);
+        if(newCustomer.getUser().getId()!=null){
+            Customer existingCustomer = getById(newCustomer.getId());
+
+            newCustomer.getUser().setEnabled(existingCustomer.getUser().getEnabled());
+        }
+        return saveOrUpdate(newCustomer);
     }
 }
