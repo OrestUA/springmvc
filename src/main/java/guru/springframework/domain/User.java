@@ -30,7 +30,7 @@ public class User extends AbstractDomainClass {
 
     private Boolean enabled = true;
 
-    @ManyToMany
+    @ManyToMany(fetch = FetchType.EAGER)
     @JoinTable
     private List<Role> roles = new ArrayList<>();
 
