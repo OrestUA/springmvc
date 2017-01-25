@@ -1,5 +1,6 @@
 package guru.springframework.controllers;
 
+import guru.springframework.commands.ProductForm;
 import guru.springframework.domain.Product;
 import guru.springframework.services.ProductService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -44,8 +45,8 @@ public class ProductController {
     }
 
     @RequestMapping(method = RequestMethod.POST)
-    public String saveOrUpdate(Product product){
-        Product savedProduct = productService.saveOrUpdate(product);
+    public String saveOrUpdate(ProductForm productForm){
+        Product savedProduct = productService.saveOrUpdateProductForm(productForm);
         return "redirect:/product/show/" + savedProduct.getId();
     }
 

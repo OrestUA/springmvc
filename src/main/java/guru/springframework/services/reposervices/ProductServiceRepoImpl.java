@@ -1,5 +1,8 @@
 package guru.springframework.services.reposervices;
 
+import guru.springframework.commands.ProductForm;
+import guru.springframework.converters.CustomerFormToCustomer;
+import guru.springframework.converters.ProductFormToProduct;
 import guru.springframework.domain.Product;
 import guru.springframework.repositories.ProductRepository;
 import guru.springframework.services.ProductService;
@@ -16,6 +19,13 @@ import java.util.List;
 @Service
 @Profile("springdatajpa")
 public class ProductServiceRepoImpl implements ProductService {
+
+    private ProductFormToProduct productFormToProduct;
+
+    @Autowired
+    public void setProductFormToProduct(ProductFormToProduct productFormToProduct) {
+        this.productFormToProduct = productFormToProduct;
+    }
 
     private ProductRepository productRepository;
 
@@ -44,5 +54,11 @@ public class ProductServiceRepoImpl implements ProductService {
     @Override
     public void delete(Integer id) {
         productRepository.delete(id);
+    }
+
+    @Override
+    public Product saveOrUpdateProductForm(ProductForm productForm) {
+        Product newProduct = productFormToProduct.convert(productForm);
+        return saveOrUpdate(newProduct);
     }
 }

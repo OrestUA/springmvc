@@ -12,7 +12,7 @@ public class CartDetail extends AbstractDomainClass {
     @ManyToOne
     private Cart cart;
 
-    @OneToOne
+    @OneToOne(cascade = CascadeType.ALL)
     private Product product;
 
     private Integer quantity;
