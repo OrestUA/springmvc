@@ -1,7 +1,7 @@
 package guru.springframework.domain;
 
 import javax.persistence.*;
-import java.util.ArrayList;
+import static javax.persistence.CascadeType.*;
 
 /**
  * Created by YSkakun on 11/3/2016.
@@ -12,7 +12,7 @@ public class CartDetail extends AbstractDomainClass {
     @ManyToOne
     private Cart cart;
 
-    @OneToOne(cascade = CascadeType.ALL)
+    @OneToOne(cascade = {PERSIST, MERGE, REMOVE, REFRESH, DETACH})
     private Product product;
 
     private Integer quantity;

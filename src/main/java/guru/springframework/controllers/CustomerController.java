@@ -6,9 +6,12 @@ import guru.springframework.services.CustomerService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+
+import javax.validation.Valid;
 
 /**
  * Created by Fudjitsu on 30.10.16.
@@ -20,38 +23,43 @@ public class CustomerController {
     @Autowired
     private CustomerService customerService;
 
-    @RequestMapping({"/list","/"})
-    public String listCustomers(Model model){
+    @RequestMapping({"/list", "/"})
+    public String listCustomers(Model model) {
         model.addAttribute("customers", customerService.listAll());
         return "customer/list";
     }
 
     @RequestMapping("/show/{id}")
-    public String showCustomer(@PathVariable Integer id, Model model){
-        model.addAttribute("customer", customerService.getById(id));
+    public String showCustomer(@PathVariable Integer id, Model model) {
+        model.addAttribute("customerForm", customerService.getById(id));
         return "customer/show";
     }
 
     @RequestMapping("/edit/{id}")
-    public String edit(@PathVariable Integer id, Model model){
-        model.addAttribute("customer", customerService.getById(id));
+    public String edit(@PathVariable Integer id, Model model) {
+        model.addAttribute("customerForm", customerService.getById(id));
         return "customer/customerform";
     }
 
     @RequestMapping("/new")
-    public String newCustomer(Model model){
-        model.addAttribute("customer", new CustomerForm());
+    public String newCustomer(Model model) {
+        model.addAttribute("customerForm", new CustomerForm());
         return "customer/customerform";
     }
 
     @RequestMapping(method = RequestMethod.POST)
-    public String saveOrUpdate(CustomerForm customerForm){
+    public String saveOrUpdate(@Valid CustomerForm customerForm, BindingResult bindingResult) {
+
+        if (bindingResult.hasErrors()) {
+            return "customer/customerform";
+        }
+
         Customer savedCustomer = customerService.saveOrUpdateCustomerForm(customerForm);
         return "redirect:/customer/show/" + savedCustomer.getId();
     }
 
     @RequestMapping("/delete/{id}")
-    public String delete(@PathVariable Integer id){
+    public String delete(@PathVariable Integer id) {
         customerService.delete(id);
         return "redirect:/customer/list";
     }
