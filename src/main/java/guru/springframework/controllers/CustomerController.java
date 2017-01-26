@@ -31,7 +31,7 @@ public class CustomerController {
 
     @RequestMapping("/show/{id}")
     public String showCustomer(@PathVariable Integer id, Model model) {
-        model.addAttribute("customerForm", customerService.getById(id));
+        model.addAttribute("customer", customerService.getById(id));
         return "customer/show";
     }
 
