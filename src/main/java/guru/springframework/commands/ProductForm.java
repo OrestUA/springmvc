@@ -1,5 +1,11 @@
 package guru.springframework.commands;
 
+import org.hibernate.validator.constraints.NotEmpty;
+
+import javax.validation.constraints.DecimalMax;
+import javax.validation.constraints.DecimalMin;
+import javax.validation.constraints.Digits;
+import javax.validation.constraints.Size;
 import java.math.BigDecimal;
 
 /**
@@ -7,11 +13,18 @@ import java.math.BigDecimal;
  */
 public class ProductForm {
 
-    private String description;
-    private BigDecimal price;
-    private String imageUrl;
     private Integer id;
     private Integer version;
+
+    @NotEmpty
+    @Size(min = 5, max = 200)
+    private String description;
+
+
+    @DecimalMax(value = "5000", inclusive = false)
+    @DecimalMin(value = "0", inclusive = false)
+    private BigDecimal price;
+    private String imageUrl;
 
     public String getDescription() {
         return description;
