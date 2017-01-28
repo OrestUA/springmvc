@@ -1,6 +1,7 @@
 package guru.springframework.commands;
 
 import org.hibernate.validator.constraints.NotEmpty;
+import org.hibernate.validator.constraints.URL;
 
 import javax.validation.constraints.DecimalMax;
 import javax.validation.constraints.DecimalMin;
@@ -20,10 +21,11 @@ public class ProductForm {
     @Size(min = 5, max = 200)
     private String description;
 
-
     @DecimalMax(value = "5000", inclusive = false)
     @DecimalMin(value = "0", inclusive = false)
     private BigDecimal price;
+
+    @URL
     private String imageUrl;
 
     public String getDescription() {
