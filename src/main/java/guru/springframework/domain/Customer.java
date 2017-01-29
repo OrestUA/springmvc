@@ -21,7 +21,7 @@ public class Customer extends AbstractDomainClass{
     @Embedded
     private Address shippingAddress;
 
-    @OneToOne(cascade = {PERSIST, MERGE, REMOVE, REFRESH, DETACH})
+    @OneToOne(cascade = {PERSIST, MERGE, REMOVE, REFRESH, DETACH}, orphanRemoval = true)
     private User user;
 
     public User getUser() {

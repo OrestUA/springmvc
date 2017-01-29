@@ -21,7 +21,7 @@ public class User extends AbstractDomainClass {
     @Transient
     private String password;
 
-    @OneToOne(cascade = {CascadeType.MERGE, CascadeType.PERSIST})
+    @OneToOne(cascade = {CascadeType.MERGE, CascadeType.REMOVE, CascadeType.PERSIST})
     private Customer customer;
 
     @OneToOne(cascade = CascadeType.ALL, orphanRemoval = true)

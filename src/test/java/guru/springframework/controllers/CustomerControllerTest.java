@@ -1,5 +1,6 @@
 package guru.springframework.controllers;
 
+import guru.springframework.commands.CustomerForm;
 import guru.springframework.domain.Address;
 import guru.springframework.domain.Customer;
 import guru.springframework.services.CustomerService;
@@ -84,7 +85,7 @@ public class CustomerControllerTest {
         mockMvc.perform(get("/customer/edit/1"))
                 .andExpect(status().isOk())
                 .andExpect(view().name("customer/customerform"))
-                .andExpect(model().attribute("customer", instanceOf(Customer.class)));
+                .andExpect(model().attribute("customerForm", instanceOf(Customer.class)));
     }
 
     @Test
@@ -94,12 +95,13 @@ public class CustomerControllerTest {
         mockMvc.perform(get("/customer/new"))
                 .andExpect(status().isOk())
                 .andExpect(view().name("customer/customerform"))
-                .andExpect(model().attribute("customer", instanceOf(Customer.class)));
+                .andExpect(model().attribute("customerForm", instanceOf(CustomerForm.class)));
     }
 
     @Test
     public void testSaveOrUpdate() throws Exception {
         Integer id = 1;
+        String userName = "Test";
         String firstName = "John";
         String lastName = "Milton";
         String email = "test@test.com";
@@ -123,50 +125,54 @@ public class CustomerControllerTest {
         returnCustomer.getBillingAddress().setState(state);
         returnCustomer.getBillingAddress().setCity(city);
 
-        when(customerService.saveOrUpdate(Mockito.any(Customer.class))).thenReturn(returnCustomer);
+        when(customerService.saveOrUpdateCustomerForm(Mockito.any(CustomerForm.class))).thenReturn(returnCustomer);
 
         mockMvc.perform(post("/customer")
-                .param("id", "1")
-                .param("firstName", firstName)
-                .param("lastName", lastName)
-                .param("email", email)
-                .param("phoneNumber", phoneNumber)
-                .param("billingAddress.zipCode", zipCode)
-                .param("billingAddress.addressLine1", address1)
-                .param("billingAddress.addressLine2", address2)
-                .param("billingAddress.state", state)
-                .param("billingAddress.city", city))
+                        .param("userId", "1")
+                        .param("userName", userName)
+                        .param("firstName", firstName)
+                        .param("lastName", lastName)
+                        .param("email", email)
+                        .param("phoneNumber", phoneNumber)
+                //TODO: refactor when customer form is ready
+//                .param("billingAddress.zipCode", zipCode)
+//                .param("billingAddress.addressLine1", address1)
+//                .param("billingAddress.addressLine2", address2)
+//                .param("billingAddress.state", state)
+//                .param("billingAddress.city", city)
+        )
 
                 .andExpect(status().is3xxRedirection())
                 .andExpect(view().name("redirect:/customer/show/1"))
-                .andExpect(model().attribute("customer", instanceOf(Customer.class)))
-                .andExpect(model().attribute("customer", hasProperty("id", is(id))))
-                .andExpect(model().attribute("customer", hasProperty("firstName", is(firstName))))
-                .andExpect(model().attribute("customer", hasProperty("lastName", is(lastName))))
-                .andExpect(model().attribute("customer", hasProperty("email", is(email))))
-                .andExpect(model().attribute("customer", hasProperty("phoneNumber", is(phoneNumber))))
-                .andExpect(model().attribute("customer", hasProperty("billingAddress", hasProperty("zipCode", is(zipCode)))))
-                .andExpect(model().attribute("customer", hasProperty("billingAddress", hasProperty("addressLine1", is(address1)))))
-                .andExpect(model().attribute("customer", hasProperty("billingAddress", hasProperty("addressLine2", is(address2)))))
-                .andExpect(model().attribute("customer", hasProperty("billingAddress", hasProperty("state", is(state)))))
-                .andExpect(model().attribute("customer", hasProperty("billingAddress", hasProperty("city", is(city)))));
+                .andExpect(model().attribute("customerForm", instanceOf(CustomerForm.class)))
+                .andExpect(model().attribute("customerForm", hasProperty("userId", is(id))))
+                .andExpect(model().attribute("customerForm", hasProperty("firstName", is(firstName))))
+                .andExpect(model().attribute("customerForm", hasProperty("lastName", is(lastName))))
+                .andExpect(model().attribute("customerForm", hasProperty("email", is(email))))
+                .andExpect(model().attribute("customerForm", hasProperty("phoneNumber", is(phoneNumber))))
+                .andExpect(model().attribute("customerForm", hasProperty("userName", is(userName))))
+//                .andExpect(model().attribute("customer", hasProperty("billingAddress", hasProperty("zipCode", is(zipCode)))))
+//                .andExpect(model().attribute("customer", hasProperty("billingAddress", hasProperty("addressLine1", is(address1)))))
+//                .andExpect(model().attribute("customer", hasProperty("billingAddress", hasProperty("addressLine2", is(address2)))))
+//                .andExpect(model().attribute("customer", hasProperty("billingAddress", hasProperty("state", is(state)))))
+//                .andExpect(model().attribute("customer", hasProperty("billingAddress", hasProperty("city", is(city)))))
+        ;
 
-        ModelResultMatchers m = model();
         //verify properties of bound object
-        ArgumentCaptor<Customer> boundCustomer = ArgumentCaptor.forClass(Customer.class);
-        verify(customerService).saveOrUpdate(boundCustomer.capture());
+        ArgumentCaptor<CustomerForm> boundCustomer = ArgumentCaptor.forClass(CustomerForm.class);
+        verify(customerService).saveOrUpdateCustomerForm(boundCustomer.capture());
 
-        Customer updateCustomer = boundCustomer.getValue();
-        assertEquals(id, updateCustomer.getId());
+        CustomerForm updateCustomer = boundCustomer.getValue();
+        assertEquals(id, updateCustomer.getUserId());
         assertEquals(firstName, updateCustomer.getFirstName());
         assertEquals(lastName, updateCustomer.getLastName());
         assertEquals(email, updateCustomer.getEmail());
         assertEquals(phoneNumber, updateCustomer.getPhoneNumber());
-        assertEquals(zipCode, updateCustomer.getBillingAddress().getZipCode());
-        assertEquals(address1, updateCustomer.getBillingAddress().getAddressLine1());
-        assertEquals(address2, updateCustomer.getBillingAddress().getAddressLine2());
-        assertEquals(state, updateCustomer.getBillingAddress().getState());
-        assertEquals(city, updateCustomer.getBillingAddress().getCity());
+//        assertEquals(zipCode, updateCustomer.getBillingAddress().getZipCode());
+//        assertEquals(address1, updateCustomer.getBillingAddress().getAddressLine1());
+//        assertEquals(address2, updateCustomer.getBillingAddress().getAddressLine2());
+//        assertEquals(state, updateCustomer.getBillingAddress().getState());
+//        assertEquals(city, updateCustomer.getBillingAddress().getCity());
     }
 
     @Test

@@ -1,6 +1,7 @@
 package guru.springframework.controllers;
 
 import guru.springframework.commands.CustomerForm;
+import guru.springframework.commands.validator.CustomerFormPasswordValidator;
 import guru.springframework.domain.Customer;
 import guru.springframework.services.CustomerService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -19,6 +20,9 @@ import javax.validation.Valid;
 @RequestMapping("/customer")
 @Controller
 public class CustomerController {
+
+    @Autowired
+    private CustomerFormPasswordValidator customerFormPasswordValidator;
 
     @Autowired
     private CustomerService customerService;
@@ -50,6 +54,7 @@ public class CustomerController {
     @RequestMapping(method = RequestMethod.POST)
     public String saveOrUpdate(@Valid CustomerForm customerForm, BindingResult bindingResult) {
 
+        customerFormPasswordValidator.validate(customerForm, bindingResult);
         if (bindingResult.hasErrors()) {
             return "customer/customerform";
         }
