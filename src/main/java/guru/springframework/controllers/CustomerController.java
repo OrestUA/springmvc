@@ -2,6 +2,7 @@ package guru.springframework.controllers;
 
 import guru.springframework.commands.CustomerForm;
 import guru.springframework.commands.validator.CustomerFormPasswordValidator;
+import guru.springframework.converters.CustomerToCustomerForm;
 import guru.springframework.domain.Customer;
 import guru.springframework.services.CustomerService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -21,8 +22,18 @@ import javax.validation.Valid;
 @Controller
 public class CustomerController {
 
-    @Autowired
+    private CustomerToCustomerForm customerToCustomerForm;
     private CustomerFormPasswordValidator customerFormPasswordValidator;
+
+    @Autowired
+    public void setCustomerToCustomerForm(CustomerToCustomerForm customerToCustomerForm) {
+        this.customerToCustomerForm = customerToCustomerForm;
+    }
+
+    @Autowired
+    public void setCustomerFormPasswordValidator(CustomerFormPasswordValidator customerFormPasswordValidator) {
+        this.customerFormPasswordValidator = customerFormPasswordValidator;
+    }
 
     @Autowired
     private CustomerService customerService;
@@ -41,7 +52,8 @@ public class CustomerController {
 
     @RequestMapping("/edit/{id}")
     public String edit(@PathVariable Integer id, Model model) {
-        model.addAttribute("customerForm", customerService.getById(id));
+        Customer customer = customerService.getById(id);
+        model.addAttribute("customerForm", customerToCustomerForm.convert(customer));
         return "customer/customerform";
     }
 
@@ -59,8 +71,8 @@ public class CustomerController {
             return "customer/customerform";
         }
 
-        Customer savedCustomer = customerService.saveOrUpdateCustomerForm(customerForm);
-        return "redirect:/customer/show/" + savedCustomer.getId();
+        CustomerForm savedCustomer = customerService.saveOrUpdate(customerForm);
+        return "redirect:/customer/show/" + savedCustomer.getCustomerId();
     }
 
     @RequestMapping("/delete/{id}")

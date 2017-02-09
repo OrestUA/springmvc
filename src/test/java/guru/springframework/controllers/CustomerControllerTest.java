@@ -1,8 +1,11 @@
 package guru.springframework.controllers;
 
 import guru.springframework.commands.CustomerForm;
+import guru.springframework.commands.validator.CustomerFormPasswordValidator;
+import guru.springframework.converters.CustomerToCustomerForm;
 import guru.springframework.domain.Address;
 import guru.springframework.domain.Customer;
+import guru.springframework.domain.User;
 import guru.springframework.services.CustomerService;
 import org.junit.Before;
 import org.junit.Test;
@@ -10,6 +13,7 @@ import org.mockito.ArgumentCaptor;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.Mockito;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.result.ModelResultMatchers;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
@@ -42,6 +46,8 @@ public class CustomerControllerTest {
     @Before
     public void setup() {
         initMocks(this);
+        customerController.setCustomerFormPasswordValidator(new CustomerFormPasswordValidator());
+        customerController.setCustomerToCustomerForm( new CustomerToCustomerForm());
         mockMvc = MockMvcBuilders.standaloneSetup(customerController).build();
     }
 
@@ -78,14 +84,19 @@ public class CustomerControllerTest {
 
     @Test
     public void testEdit() throws Exception {
+
         Integer id = 1;
 
-        when(customerService.getById(id)).thenReturn(new Customer());
+        User user = new User();
+        Customer customer = new Customer();
+        customer.setUser(user);
+
+        when(customerService.getById(id)).thenReturn(customer);
 
         mockMvc.perform(get("/customer/edit/1"))
                 .andExpect(status().isOk())
                 .andExpect(view().name("customer/customerform"))
-                .andExpect(model().attribute("customerForm", instanceOf(Customer.class)));
+                .andExpect(model().attribute("customerForm", instanceOf(CustomerForm.class)));
     }
 
     @Test
@@ -114,6 +125,7 @@ public class CustomerControllerTest {
 
         Customer returnCustomer = new Customer();
         returnCustomer.setId(id);
+        returnCustomer.setUser(new User());
         returnCustomer.setFirstName(firstName);
         returnCustomer.setLastName(lastName);
         returnCustomer.setEmail(email);
@@ -125,7 +137,8 @@ public class CustomerControllerTest {
         returnCustomer.getBillingAddress().setState(state);
         returnCustomer.getBillingAddress().setCity(city);
 
-        when(customerService.saveOrUpdateCustomerForm(Mockito.any(CustomerForm.class))).thenReturn(returnCustomer);
+        when(customerService.saveOrUpdate(Mockito.any(CustomerForm.class)))
+                .thenReturn( new CustomerToCustomerForm().convert(returnCustomer));
 
         mockMvc.perform(post("/customer")
                         .param("userId", "1")
@@ -160,7 +173,7 @@ public class CustomerControllerTest {
 
         //verify properties of bound object
         ArgumentCaptor<CustomerForm> boundCustomer = ArgumentCaptor.forClass(CustomerForm.class);
-        verify(customerService).saveOrUpdateCustomerForm(boundCustomer.capture());
+        verify(customerService).saveOrUpdate(boundCustomer.capture());
 
         CustomerForm updateCustomer = boundCustomer.getValue();
         assertEquals(id, updateCustomer.getUserId());

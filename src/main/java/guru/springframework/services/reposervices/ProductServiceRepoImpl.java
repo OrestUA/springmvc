@@ -3,6 +3,7 @@ package guru.springframework.services.reposervices;
 import guru.springframework.commands.ProductForm;
 import guru.springframework.converters.CustomerFormToCustomer;
 import guru.springframework.converters.ProductFormToProduct;
+import guru.springframework.converters.ProductToProductForm;
 import guru.springframework.domain.Product;
 import guru.springframework.repositories.ProductRepository;
 import guru.springframework.services.ProductService;
@@ -20,7 +21,14 @@ import java.util.List;
 @Profile("springdatajpa")
 public class ProductServiceRepoImpl implements ProductService {
 
+    private ProductToProductForm productToProductForm;
     private ProductFormToProduct productFormToProduct;
+
+
+    @Autowired
+    public void setProductToProductForm(ProductToProductForm productToProductForm) {
+        this.productToProductForm = productToProductForm;
+    }
 
     @Autowired
     public void setProductFormToProduct(ProductFormToProduct productFormToProduct) {
@@ -52,13 +60,22 @@ public class ProductServiceRepoImpl implements ProductService {
     }
 
     @Override
-    public void delete(Integer id) {
-        productRepository.delete(id);
+    public ProductForm saveOrUpdate(ProductForm productForm) {
+        if(productForm.getId()!=null){
+            Product productToUpdate = this.getById(productForm.getId());
+            productToUpdate.setVersion(productForm.getVersion());
+            productToUpdate.setDescription(productForm.getDescription());
+            productToUpdate.setPrice(productForm.getPrice());
+            productToUpdate.setImageUrl(productForm.getImageUrl());
+
+            return productToProductForm.convert(this.saveOrUpdate(productToUpdate));
+        }else{
+            return productToProductForm.convert(this.saveOrUpdate(productFormToProduct.convert(productForm)));
+        }
     }
 
     @Override
-    public Product saveOrUpdateProductForm(ProductForm productForm) {
-        Product newProduct = productFormToProduct.convert(productForm);
-        return saveOrUpdate(newProduct);
+    public void delete(Integer id) {
+        productRepository.delete(id);
     }
 }

@@ -10,6 +10,6 @@ import java.util.List;
  */
 public interface ProductService extends CRUDService<Product> {
 
-    Product saveOrUpdateProductForm(ProductForm productForm);
+    ProductForm saveOrUpdate(ProductForm productForm);
 
 }

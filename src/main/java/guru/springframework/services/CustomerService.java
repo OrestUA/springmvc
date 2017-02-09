@@ -12,6 +12,6 @@ import java.util.List;
  */
 public interface CustomerService extends CRUDService<Customer> {
 
-    Customer saveOrUpdateCustomerForm(CustomerForm customerForm);
+    CustomerForm saveOrUpdate(CustomerForm customerForm);
 
 }

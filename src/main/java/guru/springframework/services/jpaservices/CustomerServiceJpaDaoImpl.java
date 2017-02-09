@@ -2,6 +2,7 @@ package guru.springframework.services.jpaservices;
 
 import guru.springframework.commands.CustomerForm;
 import guru.springframework.converters.CustomerFormToCustomer;
+import guru.springframework.converters.CustomerToCustomerForm;
 import guru.springframework.domain.Customer;
 import guru.springframework.domain.User;
 import guru.springframework.services.CustomerService;
@@ -22,19 +23,24 @@ import java.util.List;
 @Profile("jpadao")
 public class CustomerServiceJpaDaoImpl extends AbstractJpaDaoService implements CustomerService {
 
+    private EncryptionService encryptionService;
+    private CustomerFormToCustomer customerFormToCustomer;
+    private CustomerToCustomerForm customerToCustomerForm;
+
     @Autowired
     public void setEncryptionService(EncryptionService encryptionService) {
         this.encryptionService = encryptionService;
     }
 
     @Autowired
+    public void setCustomerToCustomerForm(CustomerToCustomerForm customerToCustomerForm) {
+        this.customerToCustomerForm = customerToCustomerForm;
+    }
+
+    @Autowired
     public void setCustomerFormToCustomer(CustomerFormToCustomer customerFormToCustomer) {
         this.customerFormToCustomer = customerFormToCustomer;
     }
-
-    private EncryptionService encryptionService;
-
-    private CustomerFormToCustomer customerFormToCustomer;
 
     @Override
     public List<Customer> listAll() {
@@ -75,13 +81,13 @@ public class CustomerServiceJpaDaoImpl extends AbstractJpaDaoService implements 
     }
 
     @Override
-    public Customer saveOrUpdateCustomerForm(CustomerForm customerForm) {
+    public CustomerForm saveOrUpdate(CustomerForm customerForm) {
         Customer newCustomer = customerFormToCustomer.convert(customerForm);
         if(newCustomer.getUser().getId()!=null){
             Customer existingCustomer = getById(newCustomer.getId());
 
             newCustomer.getUser().setEnabled(existingCustomer.getUser().getEnabled());
         }
-        return saveOrUpdate(newCustomer);
+        return customerToCustomerForm.convert(saveOrUpdate(newCustomer));
     }
 }

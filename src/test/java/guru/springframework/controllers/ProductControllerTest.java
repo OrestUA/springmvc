@@ -1,6 +1,7 @@
 package guru.springframework.controllers;
 
 import guru.springframework.commands.ProductForm;
+import guru.springframework.converters.ProductToProductForm;
 import guru.springframework.domain.Product;
 import guru.springframework.services.ProductService;
 import org.junit.Before;
@@ -9,6 +10,7 @@ import org.mockito.ArgumentCaptor;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.Mockito;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 
@@ -30,6 +32,9 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
  * Created by Fudjitsu on 31.10.16.
  */
 public class ProductControllerTest {
+
+    @Autowired
+    private ProductToProductForm productToProductForm;
 
     @Mock
     private ProductService productService;
@@ -106,7 +111,8 @@ public class ProductControllerTest {
         returnProduct.setPrice(price);
         returnProduct.setImageUrl(imageUrl);
 
-        when(productService.saveOrUpdateProductForm(Mockito.any(ProductForm.class))).thenReturn(returnProduct);
+        when(productService.saveOrUpdate(Mockito.any(ProductForm.class)))
+                .thenReturn(productToProductForm.convert(returnProduct));
         mockMvc.perform(post("/product")
                 .param("id", "1")
                 .param("description", description)
@@ -122,7 +128,7 @@ public class ProductControllerTest {
 
         //verify properties of bound object
         ArgumentCaptor<ProductForm> boundProduct = ArgumentCaptor.forClass(ProductForm.class);
-        verify(productService).saveOrUpdateProductForm(boundProduct.capture());
+        verify(productService).saveOrUpdate(boundProduct.capture());
 
         ProductForm updateProduct = boundProduct.getValue();
         assertEquals(id,updateProduct.getId());

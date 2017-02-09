@@ -5,6 +5,7 @@ import org.hibernate.validator.constraints.URL;
 
 import javax.validation.constraints.DecimalMax;
 import javax.validation.constraints.DecimalMin;
+import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 import java.math.BigDecimal;
 
@@ -20,10 +21,12 @@ public class ProductForm {
     @Size(min = 5, max = 200)
     private String description;
 
+    @NotNull
     @DecimalMax(value = "5000", inclusive = false)
     @DecimalMin(value = "0", inclusive = false)
     private BigDecimal price;
 
+    @NotEmpty
     @URL
     private String imageUrl;
 

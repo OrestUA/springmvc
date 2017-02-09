@@ -8,7 +8,7 @@ import static javax.persistence.CascadeType.*;
  * Created by Fudjitsu on 30.10.16.
  */
 @Entity
-public class Customer extends AbstractDomainClass{
+public class Customer extends AbstractDomainClass {
 
     private String firstName;
     private String lastName;
@@ -21,7 +21,7 @@ public class Customer extends AbstractDomainClass{
     @Embedded
     private Address shippingAddress;
 
-    @OneToOne(cascade = {PERSIST, MERGE, REMOVE, REFRESH, DETACH}, orphanRemoval = true)
+    @OneToOne(cascade = {PERSIST, MERGE})
     private User user;
 
     public User getUser() {

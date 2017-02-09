@@ -2,6 +2,7 @@ package guru.springframework.services.jpaservices;
 
 import guru.springframework.commands.ProductForm;
 import guru.springframework.converters.ProductFormToProduct;
+import guru.springframework.converters.ProductToProductForm;
 import guru.springframework.domain.Product;
 import guru.springframework.services.ProductService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -20,7 +21,13 @@ import java.util.List;
 @Profile("jpadao")
 public class ProductServiceJpaDaoImpl extends AbstractJpaDaoService implements ProductService {
 
+    private ProductToProductForm productToProductForm;
     private ProductFormToProduct productFormToProduct;
+
+    @Autowired
+    public void setProductToProductForm(ProductToProductForm productToProductForm) {
+        this.productToProductForm = productToProductForm;
+    }
 
     @Autowired
     public void setProductFormToProduct(ProductFormToProduct productFormToProduct) {
@@ -61,7 +68,7 @@ public class ProductServiceJpaDaoImpl extends AbstractJpaDaoService implements P
     }
 
     @Override
-    public Product saveOrUpdateProductForm(ProductForm productForm) {
+    public ProductForm saveOrUpdate(ProductForm productForm) {
         Product newProduct = productFormToProduct.convert(productForm);
         EntityManager em = emf.createEntityManager();
 
@@ -69,6 +76,6 @@ public class ProductServiceJpaDaoImpl extends AbstractJpaDaoService implements P
 
         Product savedProduct = em.merge(newProduct);//creates new if not exists or updates existing one product
         em.getTransaction().commit();
-        return savedProduct;
+        return productToProductForm.convert(savedProduct);
     }
 }

@@ -2,6 +2,7 @@ package guru.springframework.services.mapservices;
 
 import guru.springframework.commands.CustomerForm;
 import guru.springframework.converters.CustomerFormToCustomer;
+import guru.springframework.converters.CustomerToCustomerForm;
 import guru.springframework.domain.Customer;
 import guru.springframework.domain.DomainObject;
 import guru.springframework.services.CustomerService;
@@ -18,8 +19,18 @@ import java.util.*;
 @Profile("map")
 public class CustomerServiceImpl extends AbstractMapService implements CustomerService {
 
-    @Autowired
+    private CustomerToCustomerForm customerToCustomerForm;
     private CustomerFormToCustomer customerFormToCustomer;
+
+    @Autowired
+    public void setCustomerToCustomerForm(CustomerToCustomerForm customerToCustomerForm) {
+        this.customerToCustomerForm = customerToCustomerForm;
+    }
+
+    @Autowired
+    public void setCustomerFormToCustomer(CustomerFormToCustomer customerFormToCustomer) {
+        this.customerFormToCustomer = customerFormToCustomer;
+    }
 
     @Override
     public List<DomainObject> listAll() {
@@ -42,14 +53,14 @@ public class CustomerServiceImpl extends AbstractMapService implements CustomerS
     }
 
     @Override
-    public Customer saveOrUpdateCustomerForm(CustomerForm customerForm) {
+    public CustomerForm saveOrUpdate(CustomerForm customerForm) {
         Customer newCustomer = customerFormToCustomer.convert(customerForm);
         if(newCustomer.getUser().getId()!=null){
             Customer existingCustomer = getById(newCustomer.getId());
 
             newCustomer.getUser().setEnabled(existingCustomer.getUser().getEnabled());
         }
-        return saveOrUpdate(newCustomer);
+        return customerToCustomerForm.convert(saveOrUpdate(newCustomer));
     }
 
 

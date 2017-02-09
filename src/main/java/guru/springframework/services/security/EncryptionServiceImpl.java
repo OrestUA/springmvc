@@ -9,7 +9,7 @@ import org.springframework.stereotype.Service;
  * Created by YSkakun on 11/3/2016.
  */
 @Service
-@Profile("jpadao")
+@Profile({"jpadao" ,"springdatajpa"})
 public class EncryptionServiceImpl implements EncryptionService {
 
     @Autowired
