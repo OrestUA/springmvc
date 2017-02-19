@@ -5,7 +5,7 @@ import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Component;
 
 /**
- * Created by Fudjitsu on 19.02.2017.
+ * Created by jt on 1/6/16.
  */
 @Aspect
 @Component
@@ -19,22 +19,18 @@ public class LoginAspect {
     @Before("guru.springframework.services.security.LoginAspect.doAuthenticate() && args(authentication)")
     public void logBefore(Authentication authentication){
 
-        System.out.println("before authentication " + authentication.isAuthenticated());
-
+        System.out.println("This is before the Authenticate Method: authentication: " + authentication.isAuthenticated());
     }
 
-    @AfterReturning(value = "guru.springframework.services.security.LoginAspect.doAuthenticate()", returning = "authentication")
-    public void logAfterAuthentication(Authentication authentication){
-
-        System.out.println("after authentication " + authentication.isAuthenticated());
-
+    @AfterReturning(value = "guru.springframework.services.security.LoginAspect.doAuthenticate()",
+            returning = "authentication")
+    public void logAfterAuthenticate( Authentication authentication){
+        System.out.println("This is after the Authenticate Method authentication: " + authentication.isAuthenticated());
     }
 
     @AfterThrowing("guru.springframework.services.security.LoginAspect.doAuthenticate() && args(authentication)")
-    public void logAuthenticationException(Authentication authentication){
+    public void logAuthenicationException(Authentication authentication){
         String userDetails = (String) authentication.getPrincipal();
         System.out.println("Login failed for user: " + userDetails);
-
     }
-
 }
