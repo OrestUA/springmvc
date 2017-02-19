@@ -42,7 +42,7 @@ public class UserServiceJpaDaoImpl extends AbstractJpaDaoService implements User
         EntityManager em = emf.createEntityManager();
 
         em.getTransaction().begin();
-        if(domainObject.getPassword()!=null){
+        if (domainObject.getPassword() != null) {
             domainObject.setEncryptedPassword(encryptionService.encryptString(domainObject.getPassword()));
         }
         User savedUser = em.merge(domainObject);//creates new if not exists or updates existing one User
@@ -55,7 +55,13 @@ public class UserServiceJpaDaoImpl extends AbstractJpaDaoService implements User
         EntityManager em = emf.createEntityManager();
 
         em.getTransaction().begin();
-        em.remove(em.find(User.class,id));
+        em.remove(em.find(User.class, id));
         em.getTransaction().commit();
+    }
+
+    @Override
+    public User findByUserName(String userName) {
+        EntityManager em = emf.createEntityManager();
+        return em.createQuery("from User where username = :userName", User.class).getSingleResult();
     }
 }

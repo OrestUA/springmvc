@@ -16,8 +16,8 @@ public class ProductToProductForm implements Converter<Product, ProductForm> {
         ProductForm productForm = new ProductForm();
         productForm.setId(productForm.getId());
         productForm.setVersion(productForm.getVersion());
-        productForm.setPrice(productForm.getPrice());
         productForm.setDescription(productForm.getDescription());
+        productForm.setPrice(productForm.getPrice());
         productForm.setImageUrl(productForm.getImageUrl());
 
         return productForm;

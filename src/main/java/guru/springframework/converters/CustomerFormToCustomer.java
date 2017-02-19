@@ -21,7 +21,7 @@ public class CustomerFormToCustomer implements Converter<CustomerForm, Customer>
         customer.setBillingAddress(new Address());
         customer.setShippingAddress(new Address());
         customer.getUser().setId(customerForm.getUserId());
-        customer.getUser().setVersion(customerForm.getCustomerVersion());
+        customer.getUser().setVersion(customerForm.getUserVersion());
         customer.setId(customerForm.getCustomerId());
         customer.setVersion(customerForm.getCustomerVersion());
         customer.getUser().setUsername(customerForm.getUserName());

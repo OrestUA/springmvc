@@ -26,8 +26,6 @@ public class CustomerToCustomerForm implements Converter<Customer, CustomerForm>
         customerForm.setUserId(customer.getUser().getId());
         customerForm.setUserName(customer.getUser().getUsername());
         customerForm.setUserVersion(customer.getUser().getVersion());
-        customerForm.setPasswordText(customer.getUser().getPassword());
-        customerForm.setPasswordTextConf(customer.getUser().getPassword());
 
         return customerForm;
     }

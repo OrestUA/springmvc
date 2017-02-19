@@ -26,6 +26,9 @@ public class CustomerController {
     private CustomerFormPasswordValidator customerFormPasswordValidator;
 
     @Autowired
+    private CustomerService customerService;
+
+    @Autowired
     public void setCustomerToCustomerForm(CustomerToCustomerForm customerToCustomerForm) {
         this.customerToCustomerForm = customerToCustomerForm;
     }
@@ -34,9 +37,6 @@ public class CustomerController {
     public void setCustomerFormPasswordValidator(CustomerFormPasswordValidator customerFormPasswordValidator) {
         this.customerFormPasswordValidator = customerFormPasswordValidator;
     }
-
-    @Autowired
-    private CustomerService customerService;
 
     @RequestMapping({"/list", "/"})
     public String listCustomers(Model model) {

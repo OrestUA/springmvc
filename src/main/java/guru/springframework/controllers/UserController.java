@@ -39,7 +39,7 @@ public class UserController {
     }
 
     @RequestMapping("/new")
-    public String newProduct(Model model) {
+    public String newUser(Model model) {
         model.addAttribute("user", new User());
         return "user/userform";
     }

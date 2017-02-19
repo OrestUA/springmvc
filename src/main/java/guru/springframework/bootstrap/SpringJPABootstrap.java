@@ -18,20 +18,36 @@ import java.util.List;
 @Component
 public class SpringJPABootstrap implements ApplicationListener<ContextRefreshedEvent> {
 
-    @Autowired
     private ProductService productService;
-
-    @Autowired
     private CustomerService customerService;
-
-    @Autowired
     private UserService userService;
-
-    @Autowired
     private OrderService orderService;
+    private RoleService roleService;
 
     @Autowired
-    private RoleService roleService;
+    public void setProductService(ProductService productService) {
+        this.productService = productService;
+    }
+
+    @Autowired
+    public void setCustomerService(CustomerService customerService) {
+        this.customerService = customerService;
+    }
+
+    @Autowired
+    public void setUserService(UserService userService) {
+        this.userService = userService;
+    }
+
+    @Autowired
+    public void setOrderService(OrderService orderService) {
+        this.orderService = orderService;
+    }
+
+    @Autowired
+    public void setRoleService(RoleService roleService) {
+        this.roleService = roleService;
+    }
 
 
     @Override
@@ -316,13 +332,36 @@ public class SpringJPABootstrap implements ApplicationListener<ContextRefreshedE
                     userService.saveOrUpdate(user);
                 });
             }
+
+            if (role.getRole().equalsIgnoreCase("ADMIN")) {
+                User user = userService.findByUserName("fglenanne");
+                user.addRole(role);
+                userService.saveOrUpdate(user);
+            }
         });
     }
+
+//    private void assignUserToRole(String username, String roleName) {
+//        List<Role> roles = (List<Role>) roleService.listAll();
+//        User user = userService.findByUserName(username);
+//
+//        roles.forEach(role -> {
+//            if (role.getRole().equalsIgnoreCase(roleName)) {
+//                    user.addRole(role);
+//                    userService.saveOrUpdate(user);
+//                }
+//            });
+//
+//    }
 
     private void loadRoles(){
         Role role = new Role();
         role.setRole("CUSTOMER");
         roleService.saveOrUpdate(role);
+
+        Role adminRole = new Role();
+        adminRole.setRole("ADMIN");
+        roleService.saveOrUpdate(adminRole);
     }
 
     private void loadOrderHistory() {
