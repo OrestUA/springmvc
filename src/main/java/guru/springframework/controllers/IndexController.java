@@ -9,7 +9,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 @Controller
 public class IndexController {
 
-    @RequestMapping("/")
+    @RequestMapping({"/", ""})
     public String index(){
         return "index";
     }
@@ -19,7 +19,7 @@ public class IndexController {
         return "access_denied";
     }
 
-    @RequestMapping("/login")
+    @RequestMapping("login")
     public String loginForm(){
         return "login";
     }

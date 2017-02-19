@@ -404,6 +404,7 @@ public class SpringJPABootstrap implements ApplicationListener<ContextRefreshedE
         User user1 = new User();
         user1.setUsername("mweston");
         user1.setPassword("password");
+        user1.setEnabled(true);
 
         Customer customer1 = new Customer();
         customer1.setFirstName("Micheal");
@@ -421,6 +422,7 @@ public class SpringJPABootstrap implements ApplicationListener<ContextRefreshedE
         User user2 = new User();
         user2.setUsername("fglenanne");
         user2.setPassword("password");
+        user2.setEnabled(true);
 
         Customer customer2 = new Customer();
         customer2.setFirstName("Fiona");
@@ -438,6 +440,8 @@ public class SpringJPABootstrap implements ApplicationListener<ContextRefreshedE
         User user3 = new User();
         user3.setUsername("saxe");
         user3.setPassword("password");
+        user3.setEnabled(true);
+
         Customer customer3 = new Customer();
         customer3.setFirstName("Sam");
         customer3.setLastName("Axe");
