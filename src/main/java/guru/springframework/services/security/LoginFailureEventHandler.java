@@ -22,18 +22,19 @@ public class LoginFailureEventHandler implements ApplicationListener<LoginFailur
 
     @Override
     public void onApplicationEvent(LoginFailureEvent loginFailureEvent) {
-        Authentication authentication = (Authentication) loginFailureEvent.getSource();
+        Authentication authentication = (Authentication)loginFailureEvent.getSource();
         System.out.println("LoginEvent failure for: " + authentication.getPrincipal());
         updateUserAccount(authentication);
+
     }
 
-    public void updateUserAccount(Authentication authentication) {
+    public void updateUserAccount(Authentication authentication){
         User user = userService.findByUserName((String) authentication.getPrincipal());
 
-        if (user != null) {
+        if(user!=null){
             user.setFailedLoginAttempts(user.getFailedLoginAttempts() + 1);
 
-            if (user.getFailedLoginAttempts() > 5) {
+            if(user.getFailedLoginAttempts() > 5){
                 user.setEnabled(false);
             }
 
