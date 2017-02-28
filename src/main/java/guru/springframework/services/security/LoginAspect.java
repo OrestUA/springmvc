@@ -5,6 +5,7 @@ import guru.springframework.services.UserService;
 import org.aspectj.lang.annotation.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.security.authentication.AuthenticationProvider;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
@@ -26,6 +27,9 @@ public class LoginAspect {
     private UserService userService;
 
     private EncryptionServiceImpl encryptionService;
+
+    @Autowired
+    private AuthenticationProvider authenticationProvider;
 
     @Autowired
     public void setPublisher(LoginFailureEventPublisher publisher) {
@@ -63,16 +67,14 @@ public class LoginAspect {
         System.out.println("This is before the Authenticate Method: authentication: " + authentication.isAuthenticated());
     }
 
-    @After("guru.springframework.services.security.LoginAspect.doAuthenticate() && args(authentication)")
-    public void logAfter(Authentication authentication) {
-        System.out.println("This is after the Authenticate Method: authentication: " + authentication.isAuthenticated());
-        String userDetails = (String) authentication.getPrincipal();
-        String password = (String) authentication.getCredentials();
-        if (unblockUser(userDetails, password)) {
-            System.out.println("Reset failed attempts to 0 if user entered valid creds");
-            loginSuccessEventPublisher.publish(new LoginSuccessEvent(authentication));
-        }
-    }
+//    @After("guru.springframework.services.security.LoginAspect.doAuthenticate() && args(authentication)")
+//    public void logAfter(Authentication authentication) {
+//        System.out.println("This is after the Authenticate Method: authentication: " + authentication.isAuthenticated());
+//        if (unblockUser(authentication)) {
+//            System.out.println("Reset failed attempts to 0 if user entered valid creds");
+//            loginSuccessEventPublisher.publish(new LoginSuccessEvent(authentication));
+//        }
+//    }
 
 
     @AfterReturning(value = "guru.springframework.services.security.LoginAspect.doAuthenticate()", returning = "authentication")
@@ -86,9 +88,16 @@ public class LoginAspect {
         System.out.println("Login failed for user: " + userDetails);
 
         publisher.publish(new LoginFailureEvent(authentication));
+        if (unblockUser(authentication)) {
+            System.out.println("Reset failed attempts to 0 if user entered valid creds");
+            loginSuccessEventPublisher.publish(new LoginSuccessEvent(authentication));
+            authenticationProvider.authenticate(authentication);
+        }
     }
 
-    private boolean unblockUser(String username, String password) {
+    private boolean unblockUser(Authentication authentication) {
+        String username = (String) authentication.getPrincipal();
+        String password = (String) authentication.getCredentials();
         UserDetails userDetails = userDetailsService.loadUserByUsername(username);
         boolean unblock = false;
 
