@@ -1,5 +1,6 @@
 package guru.springframework.config.thymeleaf;
 
+import nz.net.ultraq.thymeleaf.LayoutDialect;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.core.Ordered;
@@ -46,5 +47,10 @@ public class ThymeLeafConfig {
         resolver.setContentType("text/html");
         resolver.setOrder(Ordered.LOWEST_PRECEDENCE - 5);
         return resolver;
+    }
+
+    @Bean
+    public LayoutDialect layoutDialect(){
+        return new LayoutDialect();
     }
 }

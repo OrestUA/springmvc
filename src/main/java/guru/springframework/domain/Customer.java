@@ -16,10 +16,10 @@ public class Customer extends AbstractDomainClass {
     private String phoneNumber;
 
     @Embedded
-    private Address billingAddress;
+    private Address billingAddress = new Address();
 
     @Embedded
-    private Address shippingAddress;
+    private Address shippingAddress = new Address();
 
     @OneToOne(cascade = {PERSIST, MERGE})
     private User user;
