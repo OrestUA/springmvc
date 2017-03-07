@@ -23,7 +23,6 @@ import java.util.Map;
  * Created by YSkakun on 3/6/2017.
  */
 @Configuration
-@EnableTransactionManagement
 public class HibernateJpaConfig {
 
     private Map<String, String> properties = new HashMap<String, String>();
