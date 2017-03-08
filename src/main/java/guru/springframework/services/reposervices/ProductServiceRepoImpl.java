@@ -7,6 +7,7 @@ import guru.springframework.converters.ProductToProductForm;
 import guru.springframework.domain.Product;
 import guru.springframework.repositories.ProductRepository;
 import guru.springframework.services.ProductService;
+import guru.springframework.services.SendTextMessageService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Profile;
 import org.springframework.stereotype.Service;
@@ -23,7 +24,12 @@ public class ProductServiceRepoImpl implements ProductService {
 
     private ProductToProductForm productToProductForm;
     private ProductFormToProduct productFormToProduct;
+    private SendTextMessageService sendTextMessageService;
 
+    @Autowired
+    public void setSendTextMessageService(SendTextMessageService sendTextMessageService) {
+        this.sendTextMessageService = sendTextMessageService;
+    }
 
     @Autowired
     public void setProductToProductForm(ProductToProductForm productToProductForm) {
@@ -44,6 +50,9 @@ public class ProductServiceRepoImpl implements ProductService {
 
     @Override
     public List<?> listAll() {
+
+        sendTextMessageService.sendTextMessage("Listing products");
+
         List<Product> products = new ArrayList<>();
         productRepository.findAll().forEach(products::add);
         return products;
@@ -51,6 +60,7 @@ public class ProductServiceRepoImpl implements ProductService {
 
     @Override
     public Product getById(Integer id) {
+        sendTextMessageService.sendTextMessage("Requested product ID: " + id);
         return productRepository.findOne(id);
     }
 
@@ -61,7 +71,8 @@ public class ProductServiceRepoImpl implements ProductService {
 
     @Override
     public ProductForm saveOrUpdate(ProductForm productForm) {
-        if(productForm.getId()!=null){
+
+        if (productForm.getId() != null) {
             Product productToUpdate = this.getById(productForm.getId());
             productToUpdate.setVersion(productForm.getVersion());
             productToUpdate.setDescription(productForm.getDescription());
@@ -69,7 +80,7 @@ public class ProductServiceRepoImpl implements ProductService {
             productToUpdate.setImageUrl(productForm.getImageUrl());
 
             return productToProductForm.convert(this.saveOrUpdate(productToUpdate));
-        }else{
+        } else {
             return productToProductForm.convert(this.saveOrUpdate(productFormToProduct.convert(productForm)));
         }
     }
